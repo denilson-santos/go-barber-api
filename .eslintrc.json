@@ -1,0 +1,21 @@
+{
+  "extends": ["@caumeira/eslint-config/backend"],
+  "settings": {
+    "jest": {
+      "version": "lastest"
+    }
+  },
+  "rules": {
+    "class-methods-use-this": "off",
+    "camelcase": "off"
+  }
+  // ,
+  // "overrides": [
+  //   {
+  //     "files": ["**/models/*"],
+  //     "rules": {
+  //       "camelcase": "off"
+  //     }
+  //   }
+  // ]
+}
