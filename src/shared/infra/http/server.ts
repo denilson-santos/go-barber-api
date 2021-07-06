@@ -1,13 +1,13 @@
-import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 
+import express, { NextFunction, Request, Response } from 'express';
+
 import 'express-async-errors';
+import AppError from '@shared/errors/AppErrors';
+import routes from '@shared/infra/http/routes';
+import uploaudConfig from '@config/uploaud';
 
-import AppError from './errors/AppErrors';
-import routes from './routes';
-import uploaudConfig from './config/uploaud';
-
-import './database';
+import '@shared/infra/typeorm';
 
 const app = express();
 
