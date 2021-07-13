@@ -1,13 +1,16 @@
 import cors from 'cors';
 
+import 'reflect-metadata';
+
 import express, { NextFunction, Request, Response } from 'express';
 
-import 'express-async-errors';
 import AppError from '@shared/errors/AppErrors';
 import routes from '@shared/infra/http/routes';
 import uploaudConfig from '@config/uploaud';
 
+import 'express-async-errors';
 import '@shared/infra/typeorm';
+import '@shared/container';
 
 const app = express();
 
