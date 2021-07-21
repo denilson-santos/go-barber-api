@@ -1,7 +1,3 @@
-import { parseISO } from 'date-fns';
-
-import { container } from 'tsyringe';
-
 import { AppointmentController } from '../controllers/AppointmentsController';
 
 import { Router } from 'express';

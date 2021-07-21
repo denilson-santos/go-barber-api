@@ -36,4 +36,9 @@ export default class CreateUserService {
 
     return user;
   }
+
+  public test(): void {
+    // eslint-disable-next-line no-throw-literal
+    throw new Error('oi');
+  }
 }
