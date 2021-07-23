@@ -4,9 +4,6 @@ export default class AppError {
 
   constructor(message: string, statusCode = 400) {
     this.message = message;
-
     this.statusCode = statusCode;
-
-    // Object.setPrototypeOf(this, AppError.prototype);
   }
 }

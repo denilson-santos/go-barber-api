@@ -5,14 +5,16 @@ import { FakeAppointmentsRepository } from '../repositories/fakes/FakeAppointmen
 
 import AppError from '@shared/errors/AppErrors';
 
-describe('CreateAppointment', () => {
+const makeSut = (): CreateAppointmentService => {
   const fakeAppointmentsRepository = new FakeAppointmentsRepository();
 
-  const createAppointment = new CreateAppointmentService(
-    fakeAppointmentsRepository
-  );
+  return new CreateAppointmentService(fakeAppointmentsRepository);
+};
 
+describe('CreateAppointment', () => {
   it('should be able to create a new appointment', async () => {
+    const createAppointment = makeSut();
+
     const appointment = await createAppointment.execute({
       date: new Date(),
       provider_id: '123456789',
@@ -23,6 +25,8 @@ describe('CreateAppointment', () => {
   });
 
   it('should not be able to create two appointments on the same time', async () => {
+    const createAppointment = makeSut();
+
     const appointmentDate = new Date(2021, 6, 18, 14);
 
     await createAppointment.execute({

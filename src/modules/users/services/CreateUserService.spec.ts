@@ -3,17 +3,25 @@ import 'reflect-metadata';
 import CreateUserService from './CreateUserService';
 import { FakeUsersRepository } from '../repositories/fakes/FakeUsersRepository';
 
+import { FakeHashProvider } from '../providers/HashProvider/fakes/FakeHashProvider';
+
 import AppError from '@shared/errors/AppErrors';
 
-describe('CreateUserService', () => {
+const makeSut = (): CreateUserService => {
   const fakeUserRepository = new FakeUsersRepository();
-  const createUser = new CreateUserService(fakeUserRepository);
+  const fakeHashProvider = new FakeHashProvider();
 
-  const name = 'Denilson';
-  const email = 'denilson@gmail.com';
-  const password = '123456789';
+  return new CreateUserService(fakeUserRepository, fakeHashProvider);
+};
 
+const name = 'Denilson';
+const email = 'denilson@gmail.com';
+const password = '123456789';
+
+describe('CreateUserService', () => {
   it('should be able to create a user', async () => {
+    const createUser = makeSut();
+
     const user = await createUser.execute({
       name,
       email,
@@ -24,6 +32,8 @@ describe('CreateUserService', () => {
   });
 
   it('should not be able to save a user already exist', async () => {
+    const createUser = makeSut();
+
     await createUser.execute({
       name,
       email,
@@ -36,6 +46,6 @@ describe('CreateUserService', () => {
         email,
         password,
       })
-    ).toThrow();
+    ).rejects.toBeInstanceOf(AppError);
   });
 });
