@@ -5,6 +5,10 @@ export class FakeHashProvider implements IHashProvider {
     return text.length === saltLength ? text : '';
   }
 
+  public generateHashSync(text: string, saltLength: number): string {
+    return text.length === saltLength ? text : '';
+  }
+
   public async compareHash(text: string, hashed: string): Promise<boolean> {
     return text === hashed;
   }
