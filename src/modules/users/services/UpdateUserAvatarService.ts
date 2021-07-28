@@ -1,12 +1,10 @@
-import fs from 'fs';
-import path from 'path';
-
 import { inject, injectable } from 'tsyringe';
 
 import { IUsersRepository } from '../repositories/IUsersRepository';
 
+import { IStorageProvider } from '../../../shared/container/providers/FileProvider/models/IStorageProvider';
+
 import AppError from '@shared/errors/AppErrors';
-import uploaudConfig from '@config/uploaud';
 import User from '@modules/users/infra/typeorm/entities/User';
 
 interface IRequest {
@@ -17,7 +15,8 @@ interface IRequest {
 @injectable()
 export default class UpdateUserAvatarService {
   constructor(
-    @inject('UsersRepository') private usersRepository: IUsersRepository
+    @inject('UsersRepository') private usersRepository: IUsersRepository,
+    @inject('DiskStorageProvider') private fileProvider: IStorageProvider
   ) {}
 
   public async execute({ user_id, avatarFileName }: IRequest): Promise<User> {
@@ -27,18 +26,7 @@ export default class UpdateUserAvatarService {
       throw new AppError('Only authenticated users can change avatar.', 401);
     }
 
-    if (user.avatar) {
-      const userAvatarFilePath = path.join(
-        uploaudConfig.directory,
-        user.avatar
-      );
-
-      const userAvatarFileExists = await fs.promises.stat(userAvatarFilePath);
-
-      if (userAvatarFileExists) {
-        await fs.promises.unlink(userAvatarFilePath);
-      }
-    }
+    if (user.avatar) await this.fileProvider.deleteFile(user.avatar);
 
     user.avatar = avatarFileName;
 

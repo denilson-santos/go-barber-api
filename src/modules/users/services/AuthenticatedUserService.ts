@@ -34,7 +34,7 @@ export default class AuthenticatedUserService {
       throw new AppError('Incorrect email/password combination.', 401);
     }
 
-    const passwordMatched = this.hashProvider.compareHashSync(
+    const passwordMatched = await this.hashProvider.compareHash(
       password,
       user.password
     );

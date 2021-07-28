@@ -7,6 +7,7 @@ import { IAppointmentsRepository } from '@modules/appointments/repositories/IApp
 import { IUsersRepository } from '@modules/users/repositories/IUsersRepository';
 import { UsersRepository } from '@modules/users/infra/typeorm/repositories/UsersRepository';
 
+import '@shared/container/providers';
 import '@modules/users/providers/HashProvider';
 
 container.registerSingleton<IAppointmentsRepository>(

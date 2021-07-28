@@ -12,10 +12,11 @@ export class FakeUsersRepository implements IUsersRepository {
     email,
     password,
     name,
+    avatar,
   }: ICreateUserDTO): Promise<User> {
     const user = new User();
 
-    Object.assign(user, { id: uuid(), name, email, password });
+    Object.assign(user, { id: uuid(), name, email, password, avatar });
 
     this.users.push(user);
 
