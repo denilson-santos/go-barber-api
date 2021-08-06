@@ -1,4 +1,5 @@
 import { inject, injectable } from 'tsyringe';
+import { differenceInHours } from 'date-fns';
 
 import { IHashProvider } from '../providers/HashProvider/models/IHashProvider';
 import { IUsersRepository } from '../repositories/IUsersRepository';
@@ -24,6 +25,10 @@ export class ResetPasswordService {
     const userToken = await this.userTokensRepository.findByToken(token);
 
     if (!userToken) throw new AppError('Invalid token');
+
+    if (differenceInHours(Date.now(), new Date(userToken.created_at)) > 2) {
+      throw new AppError('Expired token');
+    }
 
     const user = await this.usersRepository.findById(userToken.user_id);
 
