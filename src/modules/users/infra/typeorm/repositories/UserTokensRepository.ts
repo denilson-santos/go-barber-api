@@ -13,7 +13,13 @@ export class UserTokensRepository implements IUserTokensRepository {
   }
 
   public async generate(user_id: string): Promise<UserToken> {
-    return this.ormRepository.create({ id: uuid(), user_id, token: uuid() });
+    const userToken = this.ormRepository.create({
+      id: uuid(),
+      user_id,
+      token: uuid(),
+    });
+
+    return this.ormRepository.save(userToken);
   }
 
   public async findByToken(token: string): Promise<UserToken | undefined> {

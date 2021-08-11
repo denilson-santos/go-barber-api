@@ -1,7 +1,7 @@
 import { IHashProvider } from '../models/IHashProvider';
 
 export class FakeHashProvider implements IHashProvider {
-  public async generateHash(text: string, saltLength: 8): Promise<string> {
+  public async generateHash(text: string, saltLength = 8): Promise<string> {
     return text.length === saltLength ? text : '';
   }
 

@@ -1,4 +1,4 @@
-import { FakeStorageProvider } from '../../../shared/container/providers/FileProvider/fakes/FakeStorageProvider';
+import { FakeStorageProvider } from '../../../shared/container/providers/StorageProvider/fakes/FakeStorageProvider';
 
 import { FakeHashProvider } from '../providers/HashProvider/fakes/FakeHashProvider';
 

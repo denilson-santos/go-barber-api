@@ -17,7 +17,7 @@ export class ResetPasswordService {
     @inject('UserTokensRepository')
     private userTokensRepository: IUserTokensRepository,
 
-    @inject('BcryptHashProvider')
+    @inject('HashProvider')
     private hashProvider: IHashProvider
   ) {}
 
