@@ -9,29 +9,27 @@ import UpdateUserAvatarService from './UpdateUserAvatarService';
 
 import AppError from '@shared/errors/AppErrors';
 
-type SutTypes = {
-  createUser: CreateUserService;
-  updateUserAvatar: UpdateUserAvatarService;
-};
-
-const makeSut = (): SutTypes => {
-  const fakeUsersRepository = new FakeUsersRepository();
-  const fakeHashProvider = new FakeHashProvider();
-  const fakeStorageProvider = new FakeStorageProvider();
-
-  return {
-    createUser: new CreateUserService(fakeUsersRepository, fakeHashProvider),
-    updateUserAvatar: new UpdateUserAvatarService(
-      fakeUsersRepository,
-      fakeStorageProvider
-    ),
-  };
-};
+let fakeUsersRepository: FakeUsersRepository;
+let fakeHashProvider: FakeHashProvider;
+let fakeStorageProvider: FakeStorageProvider;
+let createUser: CreateUserService;
+let updateUserAvatar: UpdateUserAvatarService;
 
 describe('UpdateUserAvatarService', () => {
-  it('should return an error if the user who is not authenticated tries to update his avatar', async () => {
-    const { updateUserAvatar } = makeSut();
+  beforeEach(() => {
+    fakeUsersRepository = new FakeUsersRepository();
+    fakeHashProvider = new FakeHashProvider();
+    fakeStorageProvider = new FakeStorageProvider();
 
+    createUser = new CreateUserService(fakeUsersRepository, fakeHashProvider);
+
+    updateUserAvatar = new UpdateUserAvatarService(
+      fakeUsersRepository,
+      fakeStorageProvider
+    );
+  });
+
+  it('should return an error if the user who is not authenticated tries to update his avatar', async () => {
     const user_id = '#123456789';
 
     const avatarFileName = 'avatar.jpg';
@@ -42,8 +40,6 @@ describe('UpdateUserAvatarService', () => {
   });
 
   it('should check if there is any old avatar, if there is, it will be deleted before saving the new one', async () => {
-    const { createUser, updateUserAvatar } = makeSut();
-
     const user = await createUser.execute({
       name: 'Denilson da Silva Santos',
       email: 'denilson@gmail.com',

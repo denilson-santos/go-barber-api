@@ -9,32 +9,29 @@ import { FakeHashProvider } from '../providers/HashProvider/fakes/FakeHashProvid
 
 import AppError from '@shared/errors/AppErrors';
 
-type SutTypes = {
-  authenticatedUser: AuthenticatedUserService;
-  createUser: CreateUserService;
-};
-
-const makeSut = (): SutTypes => {
-  const fakeUserRepository = new FakeUsersRepository();
-  const fakeHashProvider = new FakeHashProvider();
-
-  return {
-    authenticatedUser: new AuthenticatedUserService(
-      fakeUserRepository,
-      fakeHashProvider
-    ),
-    createUser: new CreateUserService(fakeUserRepository, fakeHashProvider),
-  };
-};
+let fakeUserRepository: FakeUsersRepository;
+let fakeHashProvider: FakeHashProvider;
+let authenticatedUser: AuthenticatedUserService;
+let createUser: CreateUserService;
 
 const name = 'Denilson';
 const email = 'denilson@gmail.com';
 const password = '123456789';
 
 describe('AuthenticatedUserService', () => {
-  it('should be able to authenticate', async () => {
-    const { authenticatedUser, createUser } = makeSut();
+  beforeEach(() => {
+    fakeUserRepository = new FakeUsersRepository();
+    fakeHashProvider = new FakeHashProvider();
 
+    authenticatedUser = new AuthenticatedUserService(
+      fakeUserRepository,
+      fakeHashProvider
+    );
+
+    createUser = new CreateUserService(fakeUserRepository, fakeHashProvider);
+  });
+
+  it('should be able to authenticate', async () => {
     const user = await createUser.execute({
       name,
       email,
@@ -45,8 +42,6 @@ describe('AuthenticatedUserService', () => {
   });
 
   it('should not be able to authenticate with non existing user', async () => {
-    const { authenticatedUser } = makeSut();
-
     await expect(
       authenticatedUser.execute({
         email,
@@ -56,8 +51,6 @@ describe('AuthenticatedUserService', () => {
   });
 
   it('should not be able to authenticate with wrong password', async () => {
-    const { authenticatedUser, createUser } = makeSut();
-
     await createUser.execute({
       name,
       email,

@@ -7,21 +7,23 @@ import { FakeHashProvider } from '../providers/HashProvider/fakes/FakeHashProvid
 
 import AppError from '@shared/errors/AppErrors';
 
-const makeSut = (): CreateUserService => {
-  const fakeUserRepository = new FakeUsersRepository();
-  const fakeHashProvider = new FakeHashProvider();
-
-  return new CreateUserService(fakeUserRepository, fakeHashProvider);
-};
+let fakeUserRepository: FakeUsersRepository;
+let fakeHashProvider: FakeHashProvider;
+let createUser: CreateUserService;
 
 const name = 'Denilson';
 const email = 'denilson@gmail.com';
 const password = '123456789';
 
 describe('CreateUserService', () => {
-  it('should be able to create a user', async () => {
-    const createUser = makeSut();
+  beforeEach(() => {
+    fakeUserRepository = new FakeUsersRepository();
+    fakeHashProvider = new FakeHashProvider();
 
+    createUser = new CreateUserService(fakeUserRepository, fakeHashProvider);
+  });
+
+  it('should be able to create a user', async () => {
     const user = await createUser.execute({
       name,
       email,
@@ -32,8 +34,6 @@ describe('CreateUserService', () => {
   });
 
   it('should not be able to save a user already exist', async () => {
-    const createUser = makeSut();
-
     await createUser.execute({
       name,
       email,
