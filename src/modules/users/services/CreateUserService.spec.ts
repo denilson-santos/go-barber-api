@@ -11,10 +11,6 @@ let fakeUserRepository: FakeUsersRepository;
 let fakeHashProvider: FakeHashProvider;
 let createUser: CreateUserService;
 
-const name = 'Denilson';
-const email = 'denilson@gmail.com';
-const password = '123456789';
-
 describe('CreateUserService', () => {
   beforeEach(() => {
     fakeUserRepository = new FakeUsersRepository();
@@ -25,9 +21,9 @@ describe('CreateUserService', () => {
 
   it('should be able to create a user', async () => {
     const user = await createUser.execute({
-      name,
-      email,
-      password,
+      name: 'Denilson',
+      email: 'denilson@gmail.com',
+      password: '123456789',
     });
 
     expect(user).toHaveProperty('id');
@@ -35,16 +31,16 @@ describe('CreateUserService', () => {
 
   it('should not be able to save a user already exist', async () => {
     await createUser.execute({
-      name,
-      email,
-      password,
+      name: 'Denilson',
+      email: 'denilson@gmail.com',
+      password: '123456789',
     });
 
     await expect(
       createUser.execute({
-        name,
-        email,
-        password,
+        name: 'Denilson',
+        email: 'denilson@gmail.com',
+        password: '123456789',
       })
     ).rejects.toBeInstanceOf(AppError);
   });
