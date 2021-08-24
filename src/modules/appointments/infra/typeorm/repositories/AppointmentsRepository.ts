@@ -1,7 +1,10 @@
-import { getRepository, Repository } from 'typeorm';
+import { Between, getRepository, Repository } from 'typeorm';
+import { endOfMonth, startOfMonth } from 'date-fns';
 
 import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
 import { CreateAppointmentDTO } from '@modules/appointments/dtos/CreateAppoinmentDTO';
+import { FindAllByDayAppointmentDTO } from '@modules/appointments/dtos/FindAllByDayAppointmentDTO';
+import { FindAllByMonthAppointmentDTO } from '@modules/appointments/dtos/FindAllByMonthAppointmentDTO';
 import { IAppointmentsRepository } from '@modules/appointments/repositories/IAppointmentsRepository';
 
 class AppointmentsRepository implements IAppointmentsRepository {
@@ -28,6 +31,37 @@ class AppointmentsRepository implements IAppointmentsRepository {
     });
 
     return findAppointment;
+  }
+
+  public async findAllByMonth({
+    provider_id,
+    month,
+    year,
+  }: FindAllByMonthAppointmentDTO): Promise<Appointment[] | undefined> {
+    const currentDate = new Date(year, month - 1);
+
+    return this.ormRepository.find({
+      where: {
+        provider_id,
+        date: Between(startOfMonth(currentDate), endOfMonth(currentDate)),
+      },
+    });
+  }
+
+  public async findAllByDay({
+    provider_id,
+    day,
+    month,
+    year,
+  }: FindAllByDayAppointmentDTO): Promise<Appointment[] | undefined> {
+    const date = new Date(year, month - 1, day);
+
+    return this.ormRepository.find({
+      where: {
+        provider_id,
+        date,
+      },
+    });
   }
 }
 
