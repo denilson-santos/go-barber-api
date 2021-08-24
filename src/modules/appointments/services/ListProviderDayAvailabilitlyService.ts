@@ -1,5 +1,5 @@
+import { getHours, isAfter } from 'date-fns';
 import { inject, injectable } from 'tsyringe';
-import { getHours } from 'date-fns';
 
 import { FindAllByDayAppointmentDTO } from '../dtos/FindAllByDayAppointmentDTO';
 
@@ -36,14 +36,18 @@ export class ListProviderDayAvailabilityService {
 
     const availability: Response = [];
 
+    const currentDate = new Date(Date.now());
+
     for (let index = hourStart; index <= hourEnd; index += 1) {
-      const hasAppointmentInHour = appointmentsInDay?.find(
+      const appointmentInHour = appointmentsInDay?.find(
         (appointment) => getHours(appointment.date) === index
       );
 
+      const date = new Date(year, month, day, index);
+
       availability.push({
         hour: index,
-        available: !hasAppointmentInHour,
+        available: isAfter(date, currentDate) && !appointmentInHour,
       });
     }
 
