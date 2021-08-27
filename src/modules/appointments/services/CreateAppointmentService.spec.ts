@@ -5,20 +5,27 @@ import { FakeAppointmentsRepository } from '../repositories/fakes/FakeAppointmen
 
 import AppError from '@shared/errors/AppErrors';
 
-const makeSut = (): CreateAppointmentService => {
-  const fakeAppointmentsRepository = new FakeAppointmentsRepository();
-
-  return new CreateAppointmentService(fakeAppointmentsRepository);
-};
+let fakeAppointmentsRepository: FakeAppointmentsRepository;
+let createAppointmentService: CreateAppointmentService;
 
 describe('CreateAppointment', () => {
-  it('should be able to create a new appointment', async () => {
-    const createAppointment = makeSut();
+  beforeEach(() => {
+    fakeAppointmentsRepository = new FakeAppointmentsRepository();
 
-    const appointment = await createAppointment.execute({
+    createAppointmentService = new CreateAppointmentService(
+      fakeAppointmentsRepository
+    );
+
+    jest
+      .spyOn(Date, 'now')
+      .mockImplementationOnce(() => new Date(2021, 7, 22).getTime());
+  });
+
+  it('should be able to create a new appointment', async () => {
+    const appointment = await createAppointmentService.execute({
       provider_id: '123456789',
       user_id: '987654321',
-      date: new Date(),
+      date: new Date(2021, 7, 22, 9),
     });
 
     expect(appointment).toHaveProperty('id');
@@ -26,21 +33,57 @@ describe('CreateAppointment', () => {
   });
 
   it('should not be able to create two appointments on the same time', async () => {
-    const createAppointment = makeSut();
+    const appointmentDate = new Date(2021, 7, 22, 14);
 
-    const appointmentDate = new Date(2021, 6, 18, 14);
-
-    await createAppointment.execute({
+    await createAppointmentService.execute({
       provider_id: '123456789',
       user_id: '987654321',
       date: appointmentDate,
     });
 
     await expect(
-      createAppointment.execute({
+      createAppointmentService.execute({
         provider_id: '123456789',
         user_id: '987654321',
         date: appointmentDate,
+      })
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should not be able to create an appointments on a past date', async () => {
+    await expect(
+      createAppointmentService.execute({
+        provider_id: '123456789',
+        user_id: '987654321',
+        date: new Date(2021, 7, 21, 12),
+      })
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should not be able for a provider to schedule with itself', async () => {
+    await expect(
+      createAppointmentService.execute({
+        provider_id: '123456789',
+        user_id: '123456789',
+        date: new Date(2021, 7, 22, 12),
+      })
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should not be able to create a schedule before 8am and after 5pm with himself', async () => {
+    await expect(
+      createAppointmentService.execute({
+        provider_id: '123456789',
+        user_id: '987654321',
+        date: new Date(2021, 7, 22, 7),
+      })
+    ).rejects.toBeInstanceOf(AppError);
+
+    await expect(
+      createAppointmentService.execute({
+        provider_id: '123456789',
+        user_id: '987654321',
+        date: new Date(2021, 7, 22, 18),
       })
     ).rejects.toBeInstanceOf(AppError);
   });
