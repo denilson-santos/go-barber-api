@@ -1,4 +1,5 @@
 import { getHours, isAfter } from 'date-fns';
+
 import { inject, injectable } from 'tsyringe';
 
 import { FindAllByDayAppointmentDTO } from '../dtos/FindAllByDayAppointmentDTO';
@@ -43,7 +44,7 @@ export class ListProviderDayAvailabilityService {
         (appointment) => getHours(appointment.date) === index
       );
 
-      const date = new Date(year, month, day, index);
+      const date = new Date(year, month - 1, day, index);
 
       availability.push({
         hour: index,
