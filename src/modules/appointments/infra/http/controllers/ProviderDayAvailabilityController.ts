@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 
 import { ListProviderDayAvailabilityService } from '@modules/appointments/services/ListProviderDayAvailabilitlyService';
 
-export class ListProviderDayAvailabilityController {
+export class ProviderDayAvailabilityController {
   public async index(request: Request, response: Response): Promise<Response> {
     const { provider_id } = request.params;
 
