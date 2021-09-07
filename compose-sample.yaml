@@ -1,0 +1,23 @@
+# services:
+#   node:
+#     build: .
+#     container_name: node-container
+#     user: "user"
+#     volumes:
+#       - ./:/home/node/app
+#     ports:
+#       - "3333:3333"
+#     depends_on:
+#       - postgresql
+#     command: "npm dev:server"
+#   postgresql:
+#     image: "postgres:13.4"
+#     container_name: postgresql-container
+#     user: "user"
+#     restart: always
+#     environment:
+#       POSTGRES_USER: user
+#       POSTGRES_PASSWORD: password
+#       POSTGRES_DB: go_barber
+#     volumes:
+#       - ./db/postgresql/data:/var/lib/postgresql/data
