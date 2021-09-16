@@ -1,0 +1,26 @@
+services:
+  app:
+    build: .
+    image: projeto-node/app:1.0
+    container_name: projeto-node-app
+    entrypoint: ./.docker/entrypoint.sh
+    volumes:
+      - ./:/home/node/app
+    ports:
+      - 3333:3333
+    depends_on:
+      - db-postgresql
+  db-postgresql:
+    build: ./.docker/postgresql
+    image: projeto-node/postgresql:1.0
+    container_name: projeto-node-postgresql
+    restart: always
+    tty: true
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_DB: go_barber
+    volumes:
+      - ./.db/postgresql/data:/var/lib/postgresql/data
+    ports: 
+      - 5432:5432

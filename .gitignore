@@ -1,7 +1,7 @@
 # Outhers
+.db
 tmp/*
 !tmp/.gitkeep
-db
 compose.yaml
 
 # Logs
