@@ -10,6 +10,7 @@ services:
       - 3333:3333
     depends_on:
       - db-postgresql
+      - db-mongo
   db-postgresql:
     build: ./.docker/postgresql
     image: projeto-node/postgresql:1.0
@@ -24,3 +25,15 @@ services:
       - ./.db/postgresql/data:/var/lib/postgresql/data
     ports: 
       - 5432:5432
+  db-mongo:
+    build: ./.docker/mongo
+    image: projeto-node/mongo:1.0
+    container_name: projeto-node-mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: "@Den21bt3"
+    volumes:
+      - ./.db/mongo/data:/data/db
+    ports: 
+      - 27017:27017
