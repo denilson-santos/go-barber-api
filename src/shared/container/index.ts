@@ -6,8 +6,10 @@ import { container } from 'tsyringe';
 
 import AppointmentsRepository from '@modules/appointments/infra/typeorm/repositories/AppointmentsRepository';
 import { IAppointmentsRepository } from '@modules/appointments/repositories/IAppointmentsRepository';
+import { INotificationRepository } from '@modules/notifications/repositories/INotificationRepository';
 import { IUsersRepository } from '@modules/users/repositories/IUsersRepository';
 import { IUserTokensRepository } from '@modules/users/repositories/IUserTokensRepository';
+import { NotificationRepository } from '@modules/notifications/infra/typeorm/repositories/NotificationRepository';
 import { UsersRepository } from '@modules/users/infra/typeorm/repositories/UsersRepository';
 import { UserTokensRepository } from '@modules/users/infra/typeorm/repositories/UserTokensRepository';
 
@@ -24,4 +26,9 @@ container.registerSingleton<IUsersRepository>(
 container.registerSingleton<IUserTokensRepository>(
   'UserTokensRepository',
   UserTokensRepository
+);
+
+container.registerSingleton<INotificationRepository>(
+  'NotificationRepository',
+  NotificationRepository
 );

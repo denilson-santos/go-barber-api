@@ -2,8 +2,9 @@
 .db
 tmp/*
 !tmp/.gitkeep
-compose.yaml
+docker-compose.yaml
 ormconfig.json
+.docker/mongo/init-mongo.js
 
 # Logs
 logs
