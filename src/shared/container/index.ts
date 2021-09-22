@@ -9,7 +9,7 @@ import { IAppointmentsRepository } from '@modules/appointments/repositories/IApp
 import { INotificationRepository } from '@modules/notifications/repositories/INotificationRepository';
 import { IUsersRepository } from '@modules/users/repositories/IUsersRepository';
 import { IUserTokensRepository } from '@modules/users/repositories/IUserTokensRepository';
-import { NotificationRepository } from '@modules/notifications/infra/typeorm/repositories/NotificationRepository';
+import { NotificationsRepository } from '@modules/notifications/infra/typeorm/repositories/NotificationsRepository';
 import { UsersRepository } from '@modules/users/infra/typeorm/repositories/UsersRepository';
 import { UserTokensRepository } from '@modules/users/infra/typeorm/repositories/UserTokensRepository';
 
@@ -29,6 +29,6 @@ container.registerSingleton<IUserTokensRepository>(
 );
 
 container.registerSingleton<INotificationRepository>(
-  'NotificationRepository',
-  NotificationRepository
+  'NotificationsRepository',
+  NotificationsRepository
 );

@@ -5,7 +5,7 @@ import { Notification } from '../schemas/Notification';
 import { CreateNotificationDTO } from '@modules/notifications/dtos/CreateNotificationDTO';
 import { INotificationRepository } from '@modules/notifications/repositories/INotificationRepository';
 
-export class NotificationRepository implements INotificationRepository {
+export class NotificationsRepository implements INotificationRepository {
   private ormRepository: MongoRepository<Notification>;
 
   constructor() {
