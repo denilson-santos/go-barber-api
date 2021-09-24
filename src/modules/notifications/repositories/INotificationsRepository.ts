@@ -1,7 +1,7 @@
 import { CreateNotificationDTO } from '../dtos/CreateNotificationDTO';
 import { Notification } from '../infra/typeorm/schemas/Notification';
 
-export interface INotificationRepository {
+export interface INotificationsRepository {
   create({
     content,
     recipient_id,

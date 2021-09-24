@@ -4,9 +4,10 @@ import '@modules/users/providers/HashProvider';
 
 import { container } from 'tsyringe';
 
+import { INotificationsRepository } from '@modules/notifications/repositories/INotificationsRepository';
+
 import AppointmentsRepository from '@modules/appointments/infra/typeorm/repositories/AppointmentsRepository';
 import { IAppointmentsRepository } from '@modules/appointments/repositories/IAppointmentsRepository';
-import { INotificationRepository } from '@modules/notifications/repositories/INotificationRepository';
 import { IUsersRepository } from '@modules/users/repositories/IUsersRepository';
 import { IUserTokensRepository } from '@modules/users/repositories/IUserTokensRepository';
 import { NotificationsRepository } from '@modules/notifications/infra/typeorm/repositories/NotificationsRepository';
@@ -28,7 +29,7 @@ container.registerSingleton<IUserTokensRepository>(
   UserTokensRepository
 );
 
-container.registerSingleton<INotificationRepository>(
+container.registerSingleton<INotificationsRepository>(
   'NotificationsRepository',
   NotificationsRepository
 );

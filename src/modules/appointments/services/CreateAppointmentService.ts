@@ -8,7 +8,7 @@ import { IAppointmentsRepository } from '../repositories/IAppointmentsRepository
 
 import AppError from '@shared/errors/AppErrors';
 import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
-import { INotificationRepository } from '@modules/notifications/repositories/INotificationRepository';
+import { INotificationsRepository } from '@modules/notifications/repositories/INotificationsRepository';
 
 interface IRequest {
   provider_id: string;
@@ -22,8 +22,8 @@ class CreateAppointmentService {
     @inject('AppointmentsRepository')
     private appointmentsRepository: IAppointmentsRepository,
 
-    @inject('NotificationRepository')
-    private notificationsRepository: INotificationRepository
+    @inject('NotificationsRepository')
+    private notificationsRepository: INotificationsRepository
   ) {}
 
   public async execute({

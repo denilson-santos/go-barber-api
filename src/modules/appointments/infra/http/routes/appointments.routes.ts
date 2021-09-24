@@ -1,3 +1,5 @@
+import { celebrate, Joi, Segments } from 'celebrate';
+
 import { AppointmentController } from '../controllers/AppointmentsController';
 
 import { ProviderAppointmentsController } from '../controllers/ProviderAppointmentsController';
@@ -14,7 +16,26 @@ const providerAppointmentsController = new ProviderAppointmentsController();
 
 appointmentsRouter.use(ensureAuthenticated);
 
-appointmentsRouter.post('/', appointmentsController.create);
-appointmentsRouter.get('/me', providerAppointmentsController.index);
+appointmentsRouter.post(
+  '/',
+  celebrate({
+    [Segments.BODY]: {
+      provider_id: Joi.string().uuid().required(),
+      date: Joi.date().required(),
+    },
+  }),
+  appointmentsController.create
+);
+appointmentsRouter.get(
+  '/me',
+  celebrate({
+    [Segments.BODY]: {
+      year: Joi.number().required(),
+      month: Joi.number().required(),
+      day: Joi.number().required(),
+    },
+  }),
+  providerAppointmentsController.index
+);
 
 export default appointmentsRouter;
