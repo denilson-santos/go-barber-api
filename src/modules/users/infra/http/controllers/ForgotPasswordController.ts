@@ -6,18 +6,14 @@ import { SendEmailForgotPasswordService } from '@modules/users/services/SendEmai
 
 export class ForgotPasswordController {
   public async create(request: Request, response: Response): Promise<Response> {
-    try {
-      const { email } = request.body;
+    const { email } = request.body;
 
-      const sendEmailForgotPasswordService = container.resolve(
-        SendEmailForgotPasswordService
-      );
+    const sendEmailForgotPasswordService = container.resolve(
+      SendEmailForgotPasswordService
+    );
 
-      await sendEmailForgotPasswordService.execute(email);
+    await sendEmailForgotPasswordService.execute(email);
 
-      return response.status(204).json();
-    } catch (error) {
-      return response.status(error.statusCode).json({ message: error.message });
-    }
+    return response.status(204).json();
   }
 }

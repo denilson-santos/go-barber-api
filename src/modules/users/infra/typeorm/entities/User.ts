@@ -6,6 +6,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+import { Exclude, Expose } from 'class-transformer';
+
 @Entity('users')
 export default class User {
   @PrimaryGeneratedColumn('uuid')
@@ -17,6 +19,7 @@ export default class User {
   @Column('varchar')
   email: string;
 
+  @Exclude()
   @Column('varchar')
   password: string;
 
@@ -28,4 +31,9 @@ export default class User {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @Expose({ name: 'avatar_url' })
+  getAvatarUrl(): string | null {
+    return this.avatar ? `${process.env.API_URL}/files/${this.avatar}` : null;
+  }
 }

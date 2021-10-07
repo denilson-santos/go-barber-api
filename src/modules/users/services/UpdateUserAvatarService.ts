@@ -30,6 +30,8 @@ export default class UpdateUserAvatarService {
 
     user.avatar = avatarFileName;
 
+    await this.storageProvider.saveFile(user.avatar);
+
     await this.usersRepository.update(user);
 
     return user;

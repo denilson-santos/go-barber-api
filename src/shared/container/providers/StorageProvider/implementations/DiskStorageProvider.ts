@@ -18,7 +18,7 @@ export class DiskStorageProvider implements IStorageProvider {
   public async deleteFile(file: string): Promise<void> {
     const filePath = path.resolve(uploadConfig.uploadsFolder, file);
 
-    if (this.fileExists(filePath)) fs.promises.unlink(filePath);
+    if (await this.fileExists(filePath)) fs.promises.unlink(filePath);
   }
 
   public async fileExists(filePath: string): Promise<boolean> {

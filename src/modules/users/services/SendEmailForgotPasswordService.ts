@@ -35,7 +35,7 @@ export class SendEmailForgotPasswordService {
         filePath: 'users|mails|forgot-password.hbs',
         variables: {
           name: user.name,
-          link: `${process.env.BASE_URL}/reset-password?token=${token}`,
+          link: `${process.env.WEB_URL}/reset-password?token=${token}`,
         },
       },
     });

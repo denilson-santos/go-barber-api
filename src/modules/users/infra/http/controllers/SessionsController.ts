@@ -1,8 +1,10 @@
-import { container } from "tsyringe";
+import { container } from 'tsyringe';
 
-import { Request, Response } from "express";
+import { classToClass } from 'class-transformer';
 
-import AuthenticatedUserService from "@modules/users/services/AuthenticatedUserService";
+import { Request, Response } from 'express';
+
+import AuthenticatedUserService from '@modules/users/services/AuthenticatedUserService';
 
 export class SessionsController {
   public async create(request: Request, response: Response): Promise<Response> {
@@ -15,6 +17,6 @@ export class SessionsController {
       password,
     });
 
-    return response.json({ user, token });
+    return response.json({ user: classToClass(user), token });
   }
 }
