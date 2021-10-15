@@ -1,14 +1,20 @@
 import { inject, injectable } from 'tsyringe';
 
 import Appointment from '../infra/typeorm/entities/Appointment';
-import { FindAllByDayAppointmentDTO } from '../dtos/FindAllByDayAppointmentDTO';
 import { IAppointmentsRepository } from '../repositories/IAppointmentsRepository';
+
+import { FindAllByDayAppointmentDTO } from '../dtos/FindAllByDayAppointmentDTO';
+
+import { ICacheProvider } from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 
 @injectable()
 export class ListProviderAppointmentsService {
   constructor(
     @inject('AppointmentsRepository')
-    private appointmentsRepository: IAppointmentsRepository
+    private appointmentsRepository: IAppointmentsRepository,
+
+    @inject('CacheProvider')
+    private cacheProvider: ICacheProvider
   ) {}
 
   public async execute({
