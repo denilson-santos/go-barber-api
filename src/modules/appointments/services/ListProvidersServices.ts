@@ -1,9 +1,8 @@
 import { inject, injectable } from 'tsyringe';
 
-import { FindAllProvidersDTO } from '@modules/users/dtos/FindAllProvidersDTO';
+import { ICacheProvider } from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import { IUsersRepository } from '@modules/users/repositories/IUsersRepository';
 import User from '@modules/users/infra/typeorm/entities/User';
-import { ICacheProvider } from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 
 type Request = {
   user_id?: string;
@@ -20,8 +19,10 @@ export class ListProvidersService {
   ) {}
 
   public async execute({ user_id }: Request): Promise<User[] | undefined> {
+    const cacheKey = `providers-list:${user_id}`;
+
     let providers = await this.cacheProvider.recover<User[] | undefined>(
-      `providers-list:${user_id}`
+      cacheKey
     );
 
     if (!providers) {
@@ -29,7 +30,7 @@ export class ListProvidersService {
         except_provider_id: user_id,
       });
 
-      await this.cacheProvider.save(`providers-list:${user_id}`, providers);
+      await this.cacheProvider.save<User[] | undefined>(cacheKey, providers);
     }
 
     return providers;

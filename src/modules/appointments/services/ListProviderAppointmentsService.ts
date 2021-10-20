@@ -23,12 +23,25 @@ export class ListProviderAppointmentsService {
     month,
     day,
   }: FindAllByDayAppointmentDTO): Promise<Appointment[] | undefined> {
-    const appointmentsByDay = await this.appointmentsRepository.findAllByDay({
-      provider_id,
-      year,
-      month,
-      day,
-    });
+    const cacheKey = `provider-appointments-list:${provider_id}:${year}-${month}-${day}`;
+
+    let appointmentsByDay = await this.cacheProvider.recover<
+      Appointment[] | undefined
+    >(cacheKey);
+
+    if (!appointmentsByDay) {
+      appointmentsByDay = await this.appointmentsRepository.findAllByDay({
+        provider_id,
+        year,
+        month,
+        day,
+      });
+
+      await this.cacheProvider.save<Appointment[] | undefined>(
+        cacheKey,
+        appointmentsByDay
+      );
+    }
 
     return appointmentsByDay;
   }

@@ -5,8 +5,8 @@ import { IUsersRepository } from '../repositories/IUsersRepository';
 import { IHashProvider } from '../providers/HashProvider/models/IHashProvider';
 
 import AppError from '@shared/errors/AppErrors';
-import User from '@modules/users/infra/typeorm/entities/User';
 import { ICacheProvider } from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+import User from '@modules/users/infra/typeorm/entities/User';
 
 interface IRequest {
   name: string;
