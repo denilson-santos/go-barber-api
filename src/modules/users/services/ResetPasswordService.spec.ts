@@ -7,10 +7,12 @@ import { FakeUserTokensRepository } from '../repositories/fakes/FakeUserTokensRe
 import { ResetPasswordService } from './ResetPasswordService';
 
 import AppError from '@shared/errors/AppErrors';
+import { FakeCacheProvider } from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 
 let usersRepository: FakeUsersRepository;
 let userTokensRepository: FakeUserTokensRepository;
 let hashProvider: FakeHashProvider;
+let cacheProvider: FakeCacheProvider;
 let createUserService: CreateUserService;
 let resetPasswordService: ResetPasswordService;
 
@@ -19,8 +21,13 @@ describe('ResetPasswordService', () => {
     usersRepository = new FakeUsersRepository();
     userTokensRepository = new FakeUserTokensRepository();
     hashProvider = new FakeHashProvider();
+    cacheProvider = new FakeCacheProvider();
 
-    createUserService = new CreateUserService(usersRepository, hashProvider);
+    createUserService = new CreateUserService(
+      usersRepository,
+      hashProvider,
+      cacheProvider
+    );
 
     resetPasswordService = new ResetPasswordService(
       usersRepository,

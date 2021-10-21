@@ -9,12 +9,14 @@ import { FakeUserTokensRepository } from '../repositories/fakes/FakeUserTokensRe
 
 import AppError from '@shared/errors/AppErrors';
 
+import { FakeCacheProvider } from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 import { FakeMailProvider } from '@shared/container/providers/MailProvider/fakes/FakeMailProvider';
 
 let usersRepository: FakeUsersRepository;
 let userTokensRepository: FakeUserTokensRepository;
 let mailProvider: FakeMailProvider;
 let hashProvider: FakeHashProvider;
+let cacheProvider: FakeCacheProvider;
 let createUser: CreateUserService;
 let sendEmailForgotPassword: SendEmailForgotPasswordService;
 
@@ -24,8 +26,13 @@ describe('SendEmailForgotPasswordService', () => {
     userTokensRepository = new FakeUserTokensRepository();
     mailProvider = new FakeMailProvider();
     hashProvider = new FakeHashProvider();
+    cacheProvider = new FakeCacheProvider();
 
-    createUser = new CreateUserService(usersRepository, hashProvider);
+    createUser = new CreateUserService(
+      usersRepository,
+      hashProvider,
+      cacheProvider
+    );
 
     sendEmailForgotPassword = new SendEmailForgotPasswordService(
       usersRepository,

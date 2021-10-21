@@ -5,8 +5,11 @@ import { FakeHashProvider } from '../providers/HashProvider/fakes/FakeHashProvid
 import { FakeUsersRepository } from '../repositories/fakes/FakeUsersRepository';
 import { ShowProfileService } from './ShowProfileService';
 
+import { FakeCacheProvider } from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
+
 let usersRepository: FakeUsersRepository;
 let hashProvider: FakeHashProvider;
+let cacheProvider: FakeCacheProvider;
 let showProfileService: ShowProfileService;
 let createUserService: CreateUserService;
 
@@ -14,9 +17,14 @@ describe('ShowProfileService', () => {
   beforeEach(() => {
     usersRepository = new FakeUsersRepository();
     hashProvider = new FakeHashProvider();
+    cacheProvider = new FakeCacheProvider();
 
     showProfileService = new ShowProfileService(usersRepository);
-    createUserService = new CreateUserService(usersRepository, hashProvider);
+    createUserService = new CreateUserService(
+      usersRepository,
+      hashProvider,
+      cacheProvider
+    );
   });
 
   it('should be able of show user profile', async () => {

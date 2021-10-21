@@ -8,9 +8,11 @@ import CreateUserService from './CreateUserService';
 import { FakeHashProvider } from '../providers/HashProvider/fakes/FakeHashProvider';
 
 import AppError from '@shared/errors/AppErrors';
+import { FakeCacheProvider } from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 
 let fakeUserRepository: FakeUsersRepository;
 let fakeHashProvider: FakeHashProvider;
+let fakeCacheProvider: FakeCacheProvider;
 let authenticatedUser: AuthenticatedUserService;
 let createUser: CreateUserService;
 
@@ -22,13 +24,18 @@ describe('AuthenticatedUserService', () => {
   beforeEach(() => {
     fakeUserRepository = new FakeUsersRepository();
     fakeHashProvider = new FakeHashProvider();
+    fakeCacheProvider = new FakeCacheProvider();
 
     authenticatedUser = new AuthenticatedUserService(
       fakeUserRepository,
       fakeHashProvider
     );
 
-    createUser = new CreateUserService(fakeUserRepository, fakeHashProvider);
+    createUser = new CreateUserService(
+      fakeUserRepository,
+      fakeHashProvider,
+      fakeCacheProvider
+    );
   });
 
   it('should be able to authenticate', async () => {

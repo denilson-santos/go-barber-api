@@ -4,20 +4,24 @@ import CreateAppointmentService from './CreateAppointmentService';
 import { FakeAppointmentsRepository } from '../repositories/fakes/FakeAppointmentRepository';
 
 import AppError from '@shared/errors/AppErrors';
+import { FakeCacheProvider } from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 import { FakeNotificationsRepository } from '@modules/notifications/repositories/fakes/FakeNotificationsRepository';
 
 let fakeAppointmentsRepository: FakeAppointmentsRepository;
 let fakeNotificationsRepository: FakeNotificationsRepository;
+let fakeCacheProvider: FakeCacheProvider;
 let createAppointmentService: CreateAppointmentService;
 
 describe('CreateAppointment', () => {
   beforeEach(() => {
     fakeAppointmentsRepository = new FakeAppointmentsRepository();
     fakeNotificationsRepository = new FakeNotificationsRepository();
+    fakeCacheProvider = new FakeCacheProvider();
 
     createAppointmentService = new CreateAppointmentService(
       fakeAppointmentsRepository,
-      fakeNotificationsRepository
+      fakeNotificationsRepository,
+      fakeCacheProvider
     );
 
     jest
@@ -91,4 +95,13 @@ describe('CreateAppointment', () => {
       })
     ).rejects.toBeInstanceOf(AppError);
   });
+
+  // it('should be able to invalidate cache after create new appointment', async () => {
+  //   const appointment = await createAppointmentService.execute({
+  //     provider_id: '123456789',
+  //     user_id: '987654321',
+  //     date: new Date(2021, 7, 22, 9),
+  //   });
+
+  // })
 });
