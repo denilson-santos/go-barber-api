@@ -24,3 +24,12 @@ services:
       - ./.db/postgresql/data:/var/lib/postgresql/data
     ports: 
       - 5432:5432
+  db-redis:
+    build: ./.docker/redis
+    image: projeto-node/redis:1.0
+    container_name: projeto-node-redis
+    restart: always
+    volumes:
+      - ./.db/redis/data:/data
+    ports:
+      - 6379:6379 
