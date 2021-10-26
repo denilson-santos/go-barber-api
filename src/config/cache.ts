@@ -9,9 +9,9 @@ type cacheType = {
 export default {
   config: {
     redis: {
-      host: 'db-redis',
-      password: undefined,
-      port: 6379,
+      host: process.env.REDIS_HOST,
+      password: process.env.REDIS_PASS,
+      port: process.env.REDIS_PORT || undefined,
     },
   },
 } as cacheType;
