@@ -10,7 +10,7 @@ export class ProvidersController {
     const listProvidersService = container.resolve(ListProvidersService);
 
     const providers = await listProvidersService.execute({
-      except_provider_id,
+      user_id: except_provider_id,
     });
 
     return response.json(providers);
