@@ -1,5 +1,7 @@
 import { inject, injectable } from 'tsyringe';
 
+import { classToClass } from 'class-transformer';
+
 import Appointment from '../infra/typeorm/entities/Appointment';
 import { IAppointmentsRepository } from '../repositories/IAppointmentsRepository';
 
@@ -39,7 +41,7 @@ export class ListProviderAppointmentsService {
 
       await this.cacheProvider.save<Appointment[] | undefined>(
         cacheKey,
-        appointmentsByDay
+        classToClass(appointmentsByDay)
       );
     }
 
