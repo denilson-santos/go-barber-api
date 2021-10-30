@@ -1,4 +1,4 @@
-import { getDate, getDaysInMonth } from 'date-fns';
+import { getDate, getDaysInMonth, isAfter } from 'date-fns';
 import { inject, injectable } from 'tsyringe';
 
 import Appointment from '../infra/typeorm/entities/Appointment';
@@ -34,6 +34,8 @@ export class ListProviderMonthAvailabilityService {
     const availability: Response = [];
 
     for (let index = 1; index <= getDaysInMonth(date); index += 1) {
+      const lastDateOfDay = new Date(year, month - 1, index, 23, 59, 59);
+
       let appointmentsInDay: Appointment[] = [];
 
       if (appointmentsInMonth) {
@@ -44,7 +46,8 @@ export class ListProviderMonthAvailabilityService {
 
       availability[index - 1] = {
         day: index,
-        available: appointmentsInDay.length < 10,
+        available:
+          isAfter(lastDateOfDay, new Date()) && appointmentsInDay.length < 10,
       };
     }
 
