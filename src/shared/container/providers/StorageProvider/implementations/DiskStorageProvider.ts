@@ -22,8 +22,12 @@ export class DiskStorageProvider implements IStorageProvider {
   }
 
   public async fileExists(filePath: string): Promise<boolean> {
-    if (await fs.promises.stat(filePath)) return true;
+    try {
+      await fs.promises.access(filePath);
 
-    return false;
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
 }
