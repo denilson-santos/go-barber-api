@@ -1,5 +1,7 @@
 import { container } from 'tsyringe';
 
+import { classToClass } from 'class-transformer';
+
 import { Request, Response } from 'express';
 import { ShowProfileService } from '@modules/users/services/ShowProfileService';
 import { UpdateProfileService } from '@modules/users/services/UpdateProfileService';
@@ -31,6 +33,6 @@ export class ProfileController {
       avatar,
     });
 
-    return response.json(user);
+    return response.json(classToClass(user));
   }
 }
